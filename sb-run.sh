@@ -30,7 +30,7 @@ do
 
     /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --events=$events --threads=$threads --time=$time --mysql-host=$host --mysql-user=$user --mysql-password=$password --mysql-port=$port --report-interval=1 --skip-trx=on --tables=$tables --table-size=$table_size --rate=$rate --delete_inserts=$trx --order_ranges=$trx --range_selects=on --range-size=$trx --simple_ranges=$trx --db-ps-mode=$ps_mode --mysql-ignore-errors=all run | tee -a $host-sysbench.log
 
-    cp ${tmpfile} ${tmpfile}-bak
+    #cp ${tmpfile} ${tmpfile}-bak
     echo "${i},"`cat ${tmpfile} | sort -nr | head -1` >> ${host}-cpu.csv
     unlink ${tmpfile}
 
