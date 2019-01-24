@@ -26,8 +26,6 @@ do
     mysql -h $host -e "SHOW GLOBAL STATUS" >> $host-global-status.log
     tmpfile=$path/${host}-tmp${threads}
     touch $tmpfile
-    #/usr/bin/ssh -i /home/ubuntu/.ssh/id_rsa ubuntu@${host} "sleep ${time}; top -p \$(pidof mysqld) -b -n1"|grep '%CPU' -A1|awk -v "threads=${threads}" 'NR>1{print threads "," $9}' >> ${host}-cpu-${i}.csv 
-    #while [ -f ${host}-tmp${i} ] do /usr/bin/ssh -i /home/ubuntu/.ssh/id_rsa ubuntu@${host} "sleep ${time}; top -p \$(pidof mysqld) -b -n1"|grep '%CPU' -A1|awk -v "threads=${threads}" 'NR>1{print $9}' >> ${host}-cpu-${i}.csv & done
     /bin/bash cpu-checker.sh $tmpfile $host $threads &
 
     /usr/share/sysbench/oltp_read_write.lua --db-driver=mysql --events=$events --threads=$threads --time=$time --mysql-host=$host --mysql-user=$user --mysql-password=$password --mysql-port=$port --report-interval=1 --skip-trx=on --tables=$tables --table-size=$table_size --rate=$rate --delete_inserts=$trx --order_ranges=$trx --range_selects=on --range-size=$trx --simple_ranges=$trx --db-ps-mode=$ps_mode --mysql-ignore-errors=all run | tee -a $host-sysbench.log
